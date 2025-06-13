@@ -22,12 +22,16 @@ class Tester():
 
         # retrieve output using formatted input
         result = self._run_file(self.filename, "\n".join(input))
+        print(f"result: {result}")
+
+        output_requirements = [output_requirements] if isinstance(output_requirements, str) else output_requirements
 
         if result.error:
             self.testcase.fail(result.output)
         else:
             for req in output_requirements:
                 if not req in result.output:
+                    print(f"output:{result.output}")
                     self.testcase.fail(f"{req} was not found in output!")
 
 
@@ -95,7 +99,7 @@ class Tester():
         # Run file with requested inputs and test output
         try:
             # Wait for the process to complete and capture the output
-            stdout, stderr = process.communicate(input = "\n".join(input), timeout = timeout)
+            stdout, stderr = process.communicate(input = input, timeout = timeout)
 
         except subprocess.TimeoutExpired:
             # Handle the case where the script hangs due to insufficient input
