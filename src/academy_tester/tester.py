@@ -9,18 +9,13 @@ class RunResult:
     output: str
     error: Optional[str] = None
 
-@dataclass
-class OutputResult:
-    result: bool
-    message: Optional[str] = None
-    
-
 class Tester():
-    def __init__(self, filename : str):
+    def __init__(self, testcase : unittest.TestCase, filename : str = "task.py"):
         self.cwd = os.getcwd()
         self.filename : str = filename
+        self.testcase = testcase
 
-    def test_output(self, input : Iterable[str], output_requirements : Union[str, list[str]], message_addition : str = "") -> OutputResult:
+    def test_output(self, output_requirements : Union[str, list[str]], input : Iterable[str] = [], message_addition : str = "") -> None:
         """
             Runs a python file with a set of inputs, and checks if the output has all the required strings. 
         """
@@ -29,15 +24,14 @@ class Tester():
         result = self._run_file(self.filename, "\n".join(input))
 
         if result.error:
-            return OutputResult(False, result.error)
+            self.testcase.fail(result.output)
         else:
             for req in output_requirements:
                 if not req in result.output:
-                    return OutputResult(False, f"{req} was not found in output!\n" + message_addition)
+                    self.testcase.fail(f"{req} was not found in output!")
 
-        return OutputResult(result = True)
 
-    def test_count(self, input : Iterable[str], expected_output : str, required_count : int) -> bool:
+    def test_count(self, expected_output : str, required_count : int, input : Iterable[str] = []) -> None:
         """
             Counts occurrences of an expected output with a specific input. 
             Only counts one occurence for each line
@@ -54,11 +48,16 @@ class Tester():
                 if expected_output in line:
                     count += 1
 
-            if count >= required_count:
-                return True
+            if count < required_count:
+                self.testcase.fail(f"Expected {required_count} instances of {expected_output} in output, got {count}")
             
-        return False
-            
+    
+    def test_line_count(self, input : Iterable[str] = []) -> int:
+        """
+        """
+        result : RunResult = self._run_file(self.filename, "\n".join(input))
+
+        return len(result.output.splitlines())
 
     def _run_file(self, filename : str, input : str, timeout : float = 5) -> RunResult:
         """
@@ -80,7 +79,7 @@ class Tester():
 
         # get directory of the requested file
         directory = os.path.join(self.cwd, filename)
-
+        print(directory)
 
         process = subprocess.Popen(
                 [python_version, directory],  # Command to run the script
