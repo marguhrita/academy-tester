@@ -14,7 +14,7 @@ class TestPrintStatements(unittest.TestCase):
 
         t.test_count("print", 1)
 
-        t.test_output("womp", input = ["womp"])
+        t.test_output("womp\nwomp", input = ["womp"])
 
 
 if __name__ == '__main__':

@@ -21,7 +21,7 @@ class Tester():
         """
 
         # retrieve output using formatted input
-        result = self._run_file(self.filename, "\n".join(input))
+        result = self._run_file(self.filename, input)
         print(f"result: {result}")
 
         output_requirements = [output_requirements] if isinstance(output_requirements, str) else output_requirements
@@ -44,7 +44,7 @@ class Tester():
                 expected_output (str): what to check for in output
         """
 
-        result = self._run_file(self.filename, "\n".join(input))
+        result = self._run_file(self.filename, input)
         
         if not result.error:
             count = 0
@@ -59,11 +59,11 @@ class Tester():
     def test_line_count(self, input : Iterable[str] = []) -> int:
         """
         """
-        result : RunResult = self._run_file(self.filename, "\n".join(input))
+        result : RunResult = self._run_file(self.filename, input)
 
         return len(result.output.splitlines())
 
-    def _run_file(self, filename : str, input : str, timeout : float = 5) -> RunResult:
+    def _run_file(self, filename : str, input : Iterable[str], timeout : float = 5) -> RunResult:
         """
         Runs a python file and performs any requested inputs
         Essentially a wrapper around subprocess.run
@@ -99,7 +99,7 @@ class Tester():
         # Run file with requested inputs and test output
         try:
             # Wait for the process to complete and capture the output
-            stdout, stderr = process.communicate(input = input, timeout = timeout)
+            stdout, stderr = process.communicate(input = "\n".join(input), timeout = timeout)
 
         except subprocess.TimeoutExpired:
             # Handle the case where the script hangs due to insufficient input
