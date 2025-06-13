@@ -16,28 +16,51 @@ class OutputResult:
     
 
 class Tester():
-    def __init__(self):
+    def __init__(self, filename : str):
         self.cwd = os.getcwd()
+        self.filename : str = filename
 
-    def test_output(self, filename : str, input : Iterable[str], output_requirements : Union[str, list[str]], message_addition : str = "") -> OutputResult:
+    def test_output(self, input : Iterable[str], output_requirements : Union[str, list[str]], message_addition : str = "") -> OutputResult:
         """
-            Runs a python file with a set of inputs, and checks output for a set of requirements
-            Fails accordingly if some output is not found!
+            Runs a python file with a set of inputs, and checks if the output has all the required strings. 
         """
 
         # retrieve output using formatted input
-        result = self.run_file(filename, "\n".join(input))
+        result = self._run_file(self.filename, "\n".join(input))
 
         if result.error:
             return OutputResult(False, result.error)
         else:
             for req in output_requirements:
                 if not req in result.output:
-                    return OutputResult(False, f"{req} was not found in output!")
+                    return OutputResult(False, f"{req} was not found in output!\n" + message_addition)
 
         return OutputResult(result = True)
 
-    def run_file(self, filename : str, input : str, timeout : float = 5) -> RunResult:
+    def test_count(self, input : Iterable[str], expected_output : str, required_count : int) -> bool:
+        """
+            Counts occurrences of an expected output with a specific input. 
+            Only counts one occurence for each line
+            Args:
+                input (Iterable[str]): User input for the script
+                expected_output (str): what to check for in output
+        """
+
+        result = self._run_file(self.filename, "\n".join(input))
+        
+        if not result.error:
+            count = 0
+            for line in result.output.splitlines():
+                if expected_output in line:
+                    count += 1
+
+            if count >= required_count:
+                return True
+            
+        return False
+            
+
+    def _run_file(self, filename : str, input : str, timeout : float = 5) -> RunResult:
         """
         Runs a python file and performs any requested inputs
         Essentially a wrapper around subprocess.run

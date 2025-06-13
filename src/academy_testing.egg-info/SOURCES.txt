@@ -3,8 +3,8 @@ README.md
 pyproject.toml
 src/academy_tester/FileReadOutputRead.py
 src/academy_tester/__init__.py
-src/academy_tester/main.py
 src/academy_tester/test_utils.py
+src/academy_tester/tester.py
 src/academy_testing.egg-info/PKG-INFO
 src/academy_testing.egg-info/SOURCES.txt
 src/academy_testing.egg-info/dependency_links.txt
