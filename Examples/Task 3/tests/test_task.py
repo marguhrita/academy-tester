@@ -1,20 +1,28 @@
 import unittest
 import subprocess
-import os
+import ast
 from platform import system
-from academy_tester import Tester
+from academy_tester import OutputTester, ContentTester
 
 
 class TestPrintStatements(unittest.TestCase):
-    def test(self):
+    def setUp(self):
+        self.OTester = OutputTester(self)
+        self.CTester = ContentTester(self, "task2.py")
 
-        t = Tester(self)
+    def test_output(self):
 
-        #t.test_output(["print", "Hello there"])
 
-        t.test_count("print", 1)
+        self.OTester.test_output("womp\nwomp", input = ["womp"])
 
-        t.test_output("womp\nwomp", input = ["womp"])
+    def test_line_count(self):
+        self.OTester.test_count("print", 1)
+
+    def test_lists(self):
+        p = self.CTester.get_lists()
+        for l in p.items():
+            print(l)
+            
 
 
 if __name__ == '__main__':

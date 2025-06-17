@@ -3,13 +3,15 @@ import subprocess
 from dataclasses import dataclass
 from typing import Optional, Union, Iterable
 import os, platform
+import ast
+
 
 @dataclass
 class RunResult:
     output: str
     error: Optional[str] = None
 
-class Tester():
+class OutputTester():
     def __init__(self, testcase : unittest.TestCase, filename : str = "task.py"):
         self.cwd = os.getcwd()
         self.filename : str = filename
@@ -22,7 +24,6 @@ class Tester():
 
         # retrieve output using formatted input
         result = self._run_file(self.filename, input)
-        print(f"result: {result}")
 
         output_requirements = [output_requirements] if isinstance(output_requirements, str) else output_requirements
 
@@ -108,3 +109,43 @@ class Tester():
         
 
         return RunResult(output = stdout, error = stderr)
+    
+
+class ContentTester():
+    def __init__(self, testcase : unittest.TestCase, filename : str = "task.py"):
+        self.testcase = testcase
+        self.filename = filename
+
+    def get_lists(self) -> dict[str, list]]:
+        tree : ast.Module = self._parse()
+
+        l = {}
+
+        for node in ast.walk(tree):
+            match node:
+                case ast.Assign(
+                    targets=[ast.Name(id=name)],
+                    value=ast.List(elts=elts)
+                ):
+                    l[name] = [
+                        item.value if isinstance(item, ast.Constant) else None
+                        for item in elts
+                    ]
+
+        return l
+    
+    def _parse(self) -> ast.Module:
+
+        script = self._get_file_contents()
+
+        tree = ast.parse(script)
+
+        return tree
+
+
+    def _get_file_contents(self) -> str:
+        directory = os.path.join(os.getcwd(), self.filename)
+
+
+        with open(directory, 'r', encoding='utf-8') as f:
+            return f.read()
