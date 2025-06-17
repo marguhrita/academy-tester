@@ -116,7 +116,7 @@ class ContentTester():
         self.testcase = testcase
         self.filename = filename
 
-    def get_lists(self) -> dict[str, list]]:
+    def get_lists(self) -> dict[str, list]:
         tree : ast.Module = self._parse()
 
         l = {}

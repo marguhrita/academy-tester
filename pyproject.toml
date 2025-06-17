@@ -1,8 +1,8 @@
 [project]
-name = "academy-testing"
+name = "academy-tester"
 version = "1.0.0"
 authors = [
-  { name="Alastair Thomson", email="alastairw.thomson@gmail.com" },
+  { name="Alastair Thomson", email="alastairw.thomson@gmail.com"},
 ]
 description = "package"
 readme = "README.md"
