@@ -23,9 +23,9 @@ class TestPrintStatements(unittest.TestCase):
         
 
     def test_functions(self):
-        count, contents = self.CTester.get_functions("print")
+        count = self.CTester.get_function_count("print")
 
-        print(count, contents)
+        print(count)
 
             
 

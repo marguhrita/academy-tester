@@ -135,11 +135,19 @@ class ContentTester():
                     ]
         return l
 
-    def get_functions(self, function_id : str) -> tuple[int, list]:
-        count : int = 0
-        values : list[str] = []
+    def get_function_count(self, function_id : str) -> int:
+        """
+        Gets all the functions with a provided name within the file and returns a count
+        
+        Args:
+            function_id : str = The name of the function you wish to search for
 
-        for node, next_node in pairwise(ast.walk(self.tree)):
+        Returns:
+            count : int = How many functions were found in
+        """
+        count : int = 0
+
+        for node in ast.walk(self.tree):
             print(ast.dump(node))
             match node:
                 case ast.Name(
@@ -148,9 +156,8 @@ class ContentTester():
                 ):
                     if captured_id == function_id:
                         count += 1
-                        values.append(str(next_node.value) if isinstance(next_node, ast.Constant) else "")
 
-        return count, values
+        return count
     
     def _parse(self) -> ast.Module:
 
