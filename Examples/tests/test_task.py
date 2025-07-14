@@ -20,8 +20,13 @@ class TestPrintStatements(unittest.TestCase):
 
     def test_lists(self):
         p = self.CTester.get_lists()
-        for l in p.items():
-            print(l)
+        
+
+    def test_functions(self):
+        count, contents = self.CTester.get_functions("print")
+
+        print(count, contents)
+
             
 
 

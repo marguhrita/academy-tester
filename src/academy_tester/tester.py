@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from typing import Optional, Union, Iterable
 import os, platform
 import ast
+from itertools import pairwise
 
 
 @dataclass
@@ -32,7 +33,7 @@ class OutputTester():
         else:
             for req in output_requirements:
                 if not req in result.output:
-                    print(f"output:{result.output}")
+                    #print(f"output:{result.output}")
                     self.testcase.fail(f"{req} was not found in output!")
 
 
@@ -84,7 +85,6 @@ class OutputTester():
 
         # get directory of the requested file
         directory = os.path.join(self.cwd, filename)
-        print(directory)
 
         process = subprocess.Popen(
                 [python_version, directory],  # Command to run the script
@@ -115,13 +115,15 @@ class ContentTester():
     def __init__(self, testcase : unittest.TestCase, filename : str = "task.py"):
         self.testcase = testcase
         self.filename = filename
+        self.tree : ast.Module = self._parse()
 
     def get_lists(self) -> dict[str, list]:
-        tree : ast.Module = self._parse()
+        """
+        Returns a dictionary of list names as keys, and a list of the values within as the values
+        """
+        l : dict[str, list] = {}
 
-        l = {}
-
-        for node in ast.walk(tree):
+        for node in ast.walk(self.tree):
             match node:
                 case ast.Assign(
                     targets=[ast.Name(id=name)],
@@ -131,8 +133,23 @@ class ContentTester():
                         item.value if isinstance(item, ast.Constant) else None
                         for item in elts
                     ]
-
         return l
+
+    def get_functions(self, function_id : str) -> tuple[int, list]:
+        count : int = 0
+        values : list[str] = []
+
+        for node, next_node in pairwise(ast.walk(self.tree)):
+            print(ast.dump(node))
+            match node:
+                case ast.Name(
+                    id=function_id,
+                    ctx=ast.Load()
+                ):
+                    count += 1
+                    values.append(str(next_node.value) if isinstance(next_node, ast.Constant) else "")
+
+        return count, values
     
     def _parse(self) -> ast.Module:
 

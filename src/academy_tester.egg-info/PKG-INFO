@@ -1,0 +1,26 @@
+Metadata-Version: 2.4
+Name: academy-tester
+Version: 1.0.1
+Summary: package
+Author-email: Alastair Thomson <alastairw.thomson@gmail.com>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/marguhrita/academy-tester
+Project-URL: Issues, https://github.com/marguhrita/academy-tester/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: license-file
+
+# Academy Tester (Python)
+
+This package contains functions to streamline testing tasks in the [Jetbrains Academy](https://www.jetbrains.com/academy/) plugin available in PyCharm.
+
+Examples of how to use the functions are available.
+
+# Installation
+
+```
+pip install academy-tester
+```

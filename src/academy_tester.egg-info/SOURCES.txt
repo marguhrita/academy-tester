@@ -1,0 +1,11 @@
+LICENSE
+README.md
+pyproject.toml
+src/academy_tester/FileReadOutputRead.py
+src/academy_tester/__init__.py
+src/academy_tester/test_utils.py
+src/academy_tester/tester.py
+src/academy_tester.egg-info/PKG-INFO
+src/academy_tester.egg-info/SOURCES.txt
+src/academy_tester.egg-info/dependency_links.txt
+src/academy_tester.egg-info/top_level.txt
