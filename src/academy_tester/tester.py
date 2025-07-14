@@ -143,11 +143,12 @@ class ContentTester():
             print(ast.dump(node))
             match node:
                 case ast.Name(
-                    id=function_id,
+                    id=captured_id,
                     ctx=ast.Load()
                 ):
-                    count += 1
-                    values.append(str(next_node.value) if isinstance(next_node, ast.Constant) else "")
+                    if captured_id == function_id:
+                        count += 1
+                        values.append(str(next_node.value) if isinstance(next_node, ast.Constant) else "")
 
         return count, values
     
