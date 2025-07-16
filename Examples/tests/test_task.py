@@ -27,6 +27,9 @@ class TestPrintStatements(unittest.TestCase):
 
         print(count)
 
+    def test_ops(self):
+        count = self.CTester.check_tokens(ast.Add)
+
             
 
 
