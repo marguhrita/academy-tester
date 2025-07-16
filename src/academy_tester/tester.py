@@ -112,10 +112,12 @@ class OutputTester():
     
 
 class ContentTester():
-    def __init__(self, testcase : unittest.TestCase, filename : str = "task.py"):
-        self.testcase = testcase
-        self.filename = filename
+    def __init__(self, testcase : unittest.TestCase, filename : str = "task.py") -> None:
+        self.testcase : unittest.TestCase = testcase
+        self.filename : str = filename
+        self.out : str = self._get_file_contents()
         self.tree : ast.Module = self._parse()
+
 
     def get_lists(self) -> dict[str, list]:
         """
@@ -161,9 +163,7 @@ class ContentTester():
     
     def _parse(self) -> ast.Module:
 
-        script = self._get_file_contents()
-
-        tree = ast.parse(script)
+        tree = ast.parse(self.out)
 
         return tree
 
