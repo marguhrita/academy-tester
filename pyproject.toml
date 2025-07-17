@@ -4,7 +4,7 @@ version = "2.0.1"
 authors = [
   { name="Alastair Thomson", email="alastairw.thomson@gmail.com"},
 ]
-description = ""
+description = "Package to help test tasks in the PyCharm JetBrains Academy plugin"
 readme = "README.md"
 requires-python = ">=3.9"
 classifiers = [
