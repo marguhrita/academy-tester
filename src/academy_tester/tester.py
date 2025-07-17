@@ -115,7 +115,6 @@ class ContentTester():
     def __init__(self, testcase : unittest.TestCase, filename : str = "task.py") -> None:
         self.testcase : unittest.TestCase = testcase
         self.filename : str = filename
-        self.out : str = self._get_file_contents()
         self.tree : ast.Module = self._parse()
         self.nodes : Iterator[ast.AST] = ast.walk(self.tree)
 
@@ -127,28 +126,31 @@ class ContentTester():
 
         return count
 
-    def get_variables(self):
+    @property
+    def get_variables(self) -> dict[str, object]:
         vars : dict[str, object] = {}
 
+        for node in self.nodes:
+            match node:
+                case ast.Assign(
+                    targets=[ast.Name(id=name)],
+                    value=value
+                ):
+                    vars[name] = value
         
+        return vars
 
-
+    @property
     def get_lists(self) -> dict[str, list]:
         """
         Returns a dictionary of list names as keys, and a list of the values within as the values
         """
         l : dict[str, list] = {}
 
-        for node in self.nodes:
-            match node:
-                case ast.Assign(
-                    targets=[ast.Name(id=name)],
-                    value=ast.List(elts=elts)
-                ):
-                    l[name] = [
-                        item.value if isinstance(item, ast.Constant) else None
-                        for item in elts
-                    ]
+        for name, var in self.get_variables:
+            if isinstance(var, ast.List):
+                l[name] = [item.value for item in var.elts if isinstance(item, ast.Constant)]
+        
         return l
 
     def get_function_count(self, function_id : str) -> int:
@@ -180,14 +182,16 @@ class ContentTester():
         Returns an iterator containing all the nodes in the tree
         """
 
-        tree = ast.parse(self.out)
+        tree = ast.parse(self.get_file_contents)
 
         return tree
 
-
-    def _get_file_contents(self) -> str:
+    @property
+    def get_file_contents(self) -> str:
+        """
+        Returns the contents of the file as a string
+        """
         directory = os.path.join(os.getcwd(), self.filename)
-
 
         with open(directory, 'r', encoding='utf-8') as f:
             return f.read()

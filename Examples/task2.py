@@ -5,5 +5,7 @@ print("hi")
 
 thing = 1 + 4
 
+glorp = "floop"
+
 
 greetings = "hi"

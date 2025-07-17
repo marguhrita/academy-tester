@@ -19,7 +19,7 @@ class TestPrintStatements(unittest.TestCase):
         self.OTester.test_count("print", 1)
 
     def test_lists(self):
-        p = self.CTester.get_lists()
+        p = self.CTester.get_lists
         
 
     def test_functions(self):
@@ -30,6 +30,8 @@ class TestPrintStatements(unittest.TestCase):
     def test_ops(self):
         count = self.CTester.check_tokens(ast.Add)
 
+    def test_variables(self):
+        print(self.CTester.get_variables)
             
 
 
