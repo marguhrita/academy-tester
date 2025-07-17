@@ -116,11 +116,11 @@ class ContentTester():
         self.testcase : unittest.TestCase = testcase
         self.filename : str = filename
         self.tree : ast.Module = self._parse()
-        self.nodes : Iterator[ast.AST] = ast.walk(self.tree)
+
 
     def check_tokens(self, token : Union[Type[ast.operator], Type[ast.expr_context], Type[ast.boolop], Type[ast.unaryop]]) -> int:
         count = 0
-        for node in self.nodes:
+        for node in ast.walk(self.tree):
             if isinstance(node, token):
                 count += 1
 
@@ -130,7 +130,7 @@ class ContentTester():
     def get_variables(self) -> dict[str, object]:
         vars : dict[str, object] = {}
 
-        for node in self.nodes:
+        for node in ast.walk(self.tree):
             match node:
                 case ast.Assign(
                     targets=[ast.Name(id=name)],
@@ -165,7 +165,7 @@ class ContentTester():
         """
         count : int = 0
 
-        for node in self.nodes:
+        for node in ast.walk(self.tree):
             match node:
                 case ast.Name(
                     id=captured_id,
@@ -178,7 +178,7 @@ class ContentTester():
             
     def get_attribute_count(self, attribute_id : str) -> int:
         count = 0
-        for node in self.nodes:
+        for node in ast.walk(self.tree):
             match node:
                 case ast.Attribute(
                     attr = captured_attr
