@@ -32,7 +32,7 @@ class TestPrintStatements(unittest.TestCase):
                 self.fail(f"Make sure you have printed the variable {n}")
 
     def test_attribute_function(self):
-        print(f"attr count: {self.CTester.get_attribute_count("append")}")
+        print(f"attr count: {self.CTester.get_attribute_count("pop")}")
 
 
 if __name__ == '__main__':

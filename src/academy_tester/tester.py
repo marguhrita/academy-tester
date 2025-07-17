@@ -36,6 +36,8 @@ class OutputTester():
                     #print(f"output:{result.output}")
                     self.testcase.fail(f"{req} was not found in output!")
 
+    
+
 
     def test_count(self, expected_output : str, required_count : int, input : Iterable[str] = []) -> None:
         """
