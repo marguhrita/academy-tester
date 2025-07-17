@@ -31,7 +31,8 @@ class TestPrintStatements(unittest.TestCase):
         count = self.CTester.check_tokens(ast.Add)
 
     def test_variables(self):
-        print(self.CTester.get_variables)
+        for _, v in self.CTester.get_variables.items():
+            print(ast.dump(v))
             
 
 

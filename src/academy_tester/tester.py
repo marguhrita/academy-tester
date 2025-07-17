@@ -147,7 +147,7 @@ class ContentTester():
         """
         l : dict[str, list] = {}
 
-        for name, var in self.get_variables:
+        for name, var in self.get_variables.items():
             if isinstance(var, ast.List):
                 l[name] = [item.value for item in var.elts if isinstance(item, ast.Constant)]
         
