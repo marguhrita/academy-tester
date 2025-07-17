@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from typing import Optional, Union, Iterable
 import os, platform
 import ast
-from typing import Type
+from typing import Type, Iterator
 
 
 @dataclass
@@ -117,14 +117,20 @@ class ContentTester():
         self.filename : str = filename
         self.out : str = self._get_file_contents()
         self.tree : ast.Module = self._parse()
+        self.nodes : Iterator[ast.AST] = ast.walk(self.tree)
 
     def check_tokens(self, token : Union[Type[ast.operator], Type[ast.expr_context], Type[ast.boolop], Type[ast.unaryop]]) -> int:
         count = 0
-        for node in ast.walk(self.tree):
+        for node in self.nodes:
             if isinstance(node, token):
                 count += 1
 
         return count
+
+    def get_variables(self):
+        vars : dict[str, object] = {}
+
+        
 
 
     def get_lists(self) -> dict[str, list]:
@@ -133,7 +139,7 @@ class ContentTester():
         """
         l : dict[str, list] = {}
 
-        for node in ast.walk(self.tree):
+        for node in self.nodes:
             match node:
                 case ast.Assign(
                     targets=[ast.Name(id=name)],
@@ -157,7 +163,7 @@ class ContentTester():
         """
         count : int = 0
 
-        for node in ast.walk(self.tree):
+        for node in self.nodes:
             print(ast.dump(node))
             match node:
                 case ast.Name(
@@ -170,6 +176,9 @@ class ContentTester():
         return count
     
     def _parse(self) -> ast.Module:
+        """
+        Returns an iterator containing all the nodes in the tree
+        """
 
         tree = ast.parse(self.out)
 
