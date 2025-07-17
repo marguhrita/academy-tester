@@ -166,7 +166,6 @@ class ContentTester():
         count : int = 0
 
         for node in self.nodes:
-            print(ast.dump(node))
             match node:
                 case ast.Name(
                     id=captured_id,
@@ -174,9 +173,22 @@ class ContentTester():
                 ):
                     if captured_id == function_id:
                         count += 1
-
         return count
-    
+
+            
+    def get_attribute_count(self, attribute_id : str) -> int:
+        count = 0
+        for node in self.nodes:
+            match node:
+                case ast.Attribute(
+                    attr = captured_attr
+                ):
+                    if captured_attr == attribute_id:
+                        count += 1
+        return count
+
+
+
     def _parse(self) -> ast.Module:
         """
         Returns an iterator containing all the nodes in the tree

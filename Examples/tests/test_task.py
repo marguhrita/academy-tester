@@ -14,9 +14,6 @@ class TestPrintStatements(unittest.TestCase):
         #self.OTester.test_output("womp\nwomp", input = ["womp"])
         pass
 
-    def test_line_count(self):
-        self.OTester.test_count("print", 1)
-
     def test_lists(self):
         p = self.CTester.get_lists
         
@@ -30,13 +27,12 @@ class TestPrintStatements(unittest.TestCase):
         count = self.CTester.check_tokens(ast.Add)
 
     def test_variables(self):
-        for n, v in self.CTester.get_variables.items():
+        for n, _ in self.CTester.get_variables.items():
             if not f"print({n})" in self.CTester.get_file_contents:
                 self.fail(f"Make sure you have printed the variable {n}")
-                
-            
 
-    
+    def test_attribute_function(self):
+        print(f"attr count: {self.CTester.get_attribute_count("append")}")
 
 
 if __name__ == '__main__':
