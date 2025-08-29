@@ -101,8 +101,9 @@ class OutputTester():
                 encoding="utf-8",      # Ensure UTF-8 encoding
                 errors="replace"   # Handle any bad characters gracefully  
             )
+       
+        input = [input] if isinstance(input, str) else output_requirements
 
-    
         
 
         # Run file with requested inputs and test output
