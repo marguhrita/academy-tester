@@ -1,6 +1,6 @@
 [project]
 name = "academy-tester"
-version = "2.1.2"
+version = "2.1.3"
 authors = [
   { name="Alastair Thomson", email="alastairw.thomson@gmail.com"},
 ]

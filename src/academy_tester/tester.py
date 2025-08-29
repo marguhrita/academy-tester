@@ -20,7 +20,11 @@ class OutputTester():
 
     def test_output(self, output_requirements : Union[str, list[str]], input : Iterable[str] = [], message_addition : str = "") -> None:
         """
-            Runs a python file with a set of inputs, and checks if the output has all the required strings. 
+            Runs a python file with a set of inputs, and checks if the output has all the required strings.
+
+        Args:
+            output_requirements Union[str, list[str]]: The expected output or outputs
+            input Iterable[str]: 
         """
 
         # retrieve output using formatted input
@@ -97,6 +101,8 @@ class OutputTester():
                 encoding="utf-8",      # Ensure UTF-8 encoding
                 errors="replace"   # Handle any bad characters gracefully  
             )
+
+    
         
 
         # Run file with requested inputs and test output
