@@ -101,8 +101,9 @@ class OutputTester():
                 encoding="utf-8",      # Ensure UTF-8 encoding
                 errors="replace"   # Handle any bad characters gracefully  
             )
-       
-        input = [input] if isinstance(input, str) else output_requirements
+        
+        
+        input = [input] if isinstance(input, str) else input
 
         
 
@@ -128,6 +129,15 @@ class ContentTester():
 
 
     def check_tokens(self, token : Union[Type[ast.operator], Type[ast.expr_context], Type[ast.boolop], Type[ast.unaryop]]) -> int:
+        """
+        Returns a count for a specific token type in the program
+
+        Args:
+            token: an ast token
+
+        Returns:
+            count (int): The number of these tokens found in the program
+        """
         count = 0
         for node in ast.walk(self.tree):
             if isinstance(node, token):
