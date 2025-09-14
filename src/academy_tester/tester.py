@@ -38,7 +38,7 @@ class OutputTester():
             for req in output_requirements:
                 if not req in result.output:
                     #print(f"output:{result.output}")
-                    self.testcase.fail(f"{req} was not found in output!")
+                    self.testcase.fail(f"{req} was not found in output for the input: {input}")
 
     
 
