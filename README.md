@@ -16,6 +16,18 @@ This module provides two helper classes, `OutputTester` and `ContentTester`, des
 
 ---
 
+# Basic test template
+```py
+import unittest
+from academy_tester import OutputTester, ContentTester
+
+
+class TestPrintStatements(unittest.TestCase):
+    def setUp(self):
+        self.OTester = OutputTester(self)
+        self.CTester = ContentTester(self)
+```
+
 ### `OutputTester`
 
 A utility class that wraps a `unittest.TestCase` to simplify testing the standard output of a Python script. It runs a target script as a subprocess, captures its output and error streams, and provides methods to assert conditions on the results.
