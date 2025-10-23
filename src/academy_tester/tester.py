@@ -29,6 +29,7 @@ class OutputTester():
 
         # retrieve output using formatted input
         result = self._run_file(self.filename, input)
+        #print(f"result: {result}")
 
         output_requirements = [output_requirements] if isinstance(output_requirements, str) else output_requirements
 
