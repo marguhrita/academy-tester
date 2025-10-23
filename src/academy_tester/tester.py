@@ -129,7 +129,7 @@ class ContentTester():
         self.tree : ast.Module = self._parse()
 
 
-    def check_tokens(self, token : Union[Type[ast.operator], Type[ast.expr_context], Type[ast.boolop], Type[ast.unaryop]]) -> int:
+    def check_tokens(self, token : Union[Type[ast.operator], Type[ast.expr_context], Type[ast.boolop], Type[ast.unaryop], Type[ast.stmt]]) -> int:
         """
         Returns a count for a specific token type in the program
 
