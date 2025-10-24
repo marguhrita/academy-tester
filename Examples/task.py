@@ -1,4 +1,4 @@
-bugs = ["Sluggy", "Grubby", "Buggy", "Cricket", "Ant"]
+def add(thing1, thing2):
+    return thing1 + thing2
 
-for counter in range(0,3):
-    print(bugs[counter])
+print(add("glorpus", "florpus"))

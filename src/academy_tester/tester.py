@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from typing import Optional, Union, Iterable
 import os, platform
 import ast
-from typing import Type, Iterator
+from typing import Type, Iterator, List
 
 
 @dataclass
@@ -172,6 +172,36 @@ class ContentTester():
                 l[name] = [item.value for item in var.elts if isinstance(item, ast.Constant)]
         
         return l
+    
+    def get_functions(self) -> List[str]:
+        l : List[str] = []
+
+        for node in ast.walk(self.tree):
+            match node:
+                case ast.Name(
+                    id=captured_id,
+                    ctx=ast.Load()
+                ):
+                    l.append(captured_id)
+
+        return l
+    
+    def get_user_defined_functions(self) -> dict[str, List[str]]:
+        l : dict[str, List[str]] = {}
+
+        for node in ast.walk(self.tree):
+            match node:
+                case ast.FunctionDef(
+                    name=name,
+                    args = arguments
+                ):
+                    match arguments:
+                        case ast.arguments(
+                            args=arg_list
+                        ):
+                            l[name] = [a.arg for a in arg_list]
+
+        return l
 
     def get_function_count(self, function_id : str) -> int:
         """
@@ -194,6 +224,7 @@ class ContentTester():
                     if captured_id == function_id:
                         count += 1
         return count
+
 
             
     def get_attribute_count(self, attribute_id : str) -> int:
